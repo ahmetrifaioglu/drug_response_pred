@@ -26,7 +26,7 @@ RAW_DATA_PATH = os.path.join(S_PATH, "../data", "raw")
 class Regressors(object):
 
 
-    def __init__(self,):
+    def __init__(self, model_out_path):
         
         """
         Description: 
@@ -45,6 +45,7 @@ class Regressors(object):
         Returns:
             model: Parameters of fitted model
         """
+        self.model_out_path = model_out_path
         self.parameters = None
         self.n_jobs = -1
         self.random_state = 0
@@ -72,6 +73,10 @@ class Regressors(object):
         param_list.append({})
         
         param_dict_result = dict()
+        best_result_param = ""
+        best_r2 = -np.inf
+        best_model = None
+        best_results_list = []
         print("Starting hyperparameter search...")
         for param in tqdm(param_list):
             param_str = self.dict_to_str(param)
@@ -97,17 +102,28 @@ class Regressors(object):
             result_list = [val_r2_score, val_mse_score, test_r2_score, test_mse_score]
             result_list = [round(val, 3) for val in result_list]
             param_dict_result[param_str] = result_list
-        print("Hyperparameter finished...")
-        best_result_param = ""
-        best_r2 = -np.inf
+            
+            if val_r2_score > best_r2:
+                best_r2 = val_r2_score
+                best_result_param = param_str
+                best_model = model
+                best_results_list = result_list
+
+        print("Hyperparameter search finished...")
         
-        result_arr = []
-        for key in param_dict_result:
-            print("Result param", key)
-            if param_dict_result[key][0]> best_r2:
-                best_average_r2 = param_dict_result[key]
-                best_result_param = key
-        print("Best ave. r2", best_average_r2, "best param", best_result_param)
+        print("Saving the best model...")
+        if self.model_out_path is not None:
+            with open(self.model_out_path+"_performance_results.txt", "w") as f:
+                f.write("Hyperparameters: "+best_result_param)
+                f.write("\t".join(["val_r2_score", "val_mse_score", "test_r2_score", "test_mse_score"])+"\n")
+                f.write("\t".join([str(val) for val in best_results_list]))
+
+
+            with open(self.model_out_path+".model", 'wb') as f:
+                pickle.dump(best_model,f)
+
+            
+        print("Best ave. r2", best_r2, "best param", best_result_param)
         """rows = []
         for fold in param_dict_result[best_result_param]:
             rows.append([fold])
@@ -115,10 +131,7 @@ class Regressors(object):
         df = pd.DataFrame(rows, columns = ["Fold #", "Validation R2", "Validation MSE", "Test R2", "Test MSE"])
         df.to_csv(os.path.join(OUT_DATA_PATH, "baseline_predictors", f"{classifier}_best_performance.csv" ))"""
 
-        """if self.path is not None:
-
-            with open(self.path, 'wb') as f:
-                pickle.dump(best_model,f)"""
+        """"""
         
     def dict_to_str(self, i_dict):
         # an empty string
@@ -126,23 +139,3 @@ class Regressors(object):
         for key in i_dict:
             converted += key + ": " + str(i_dict[key]) + ", "
         return converted
-        
-        
-
-
-
-
-
-# regressor_obj.run_k_fold_baseline()
-
-
-
-
-"""
-self.init_folds()
-        self.regress_baseline_model("SVR")
-        self.regress_baseline_model("RF")
-        self.regress_baseline_model("LR")
-    self.regress_baseline_model("MLP")
-
-"""
