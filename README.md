@@ -1,6 +1,6 @@
 # Analysis Protocol for Identifying Candidate Drugs for a Specific Disease
 
-A. Methodology Protocol Design
+**A. Methodology Protocol Design**
 
 1. Introduction:
    In this proposal, I present a protocol for identifying candidate drugs to potentially be used to cure or alleviate a disease phenotype. The protocol utilizes prioritized gene lists as one of the primary data inputs. Publicly available open source databases and tools will be used to perform the analysis.
@@ -34,6 +34,67 @@ A. Methodology Protocol Design
 4. Output:
    The final output of the computational analysis is a recommendation list of candidate compounds/drugs that have the potential to aid in alleviating the observed disease phenotype.
 
-B. Solution Implementation
-Provide a repository that includes a script in the scripting language of your preference (R, bash, python) that implements some of the above tools as you see fit within a 3 day timeline which is the duration of the challenge. Provide a minimal README.md file alongside that describes the protocol (part A of the challenge) and 
+**B. Solution Implementation**
+1. Summary of the implementation:
+
+As a case study of the challenge, I selected "COLORECTAL CANCER" (i.e. CRC) as the disease of interest and got the list of genes that are associated with CRC from  Online Mendelian Inheritance in Man (OMIM) database https://omim.org/entry/114500 . First, ChEMBL A
+
+2. A subset of associated genes were saved to the text file where each line must include a gene symbol. The created file will be used as input to the system. In our case the file is stored under `data/COLORECTAL_CANCER_genes.txt`. Subsequnetly, the known activities against the list of genes are retrived from the ChEMBL database which is a manually curated database of bioactive molecules with drug-like properties. The aim here is to get manually-cruted drug-target interaction data to create our trainign dataset. First, we apply several filtering and preprocessing steps to get more reliable bioactivities. Initially, the data points were selectively filtered based on various criteria such as the "target type" (specifically single protein), "taxonomy" (including human), "assay type" (covering binding assays), and "standard type" (i.e. IC50) attributes.
+3.
+4. compound-target 
+
+5. 
+6. The implementation includes 5 main scripts:
+
+-- **_evaluation_metrics.py_**
+The script defines several functions for calculating evaluation metrics for regression models. The metrics included are:
+
+- R-squared score (coefficient of determination) calculated using the `r2_score` function from `sklearn.metrics`.
+- Mean squared error (MSE) calculated using the `mean_squared_error` function from `sklearn.metrics`.
+- Root mean squared error (RMSE) calculated by taking the square root of the MSE.
+- Mean absolute error (MAE) calculated using the `mean_absolute_error` function from `sklearn.metrics`.
+
+Each function takes two arguments, `y_true` and `y_pred`, which represent the true values and predicted values, respectively, for a regression task. The functions return the corresponding evaluation metric value.
+
+-- **_hyperparam_config.py_**
+This script includes the dictionaries for hyperparameter search.
+
+-- **_model.py_**
+This script defines a class called Regressors that implements several regression models and their hyperparameter tuning using cross-validation. 
+
+-- **_utils.py_**
+Includes several utilities function for data generation and manipulation. 
+
+-- **_main.py_**
+The main function that takes the inputs and perform training.
+
+
+
+"""
+The aim here is not to provide an accurate drug/compı specific to a disease. Here the aim is to show how to create a predictive model to infer the activate compounds against a disease.
+
+To do this, we first get the gene list provided by the user. 
+The basic assumption is that we have prioritised list of genes that were inferred against a disease. 
+
+
+ . We do not use the all the activities available in ChEMBL database. First, we apply several filtering steps 
+to get more reliable bioactivities (i.e. )
+The model should also be aware of the genes so the features of the genes can also be used. 
+
+"""
+
+"""
+
+The model uses all the drug-target interaction associated with the provided list of genes without taking into account the target informatiom. 
+
+This method can be further improved by considering the target gene or by creating a pairwise input machilne learning model so that the the target 
+information is also incorporated. 
+
+This model, since in majority of cases only the hihgly bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, 
+a well-defined sampling techniques should be applied before creating the final model based on the distributin of the data. 
+
+
+Here
+
+"""
 
