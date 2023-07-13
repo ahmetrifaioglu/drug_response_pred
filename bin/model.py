@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os, sys
 import numpy as np
-from sklearn.model_selection import RandomizedSearchCV,RepeatedKFold, PredefinedSplit
 import pickle
 from tqdm import tqdm
 import pandas as pd
@@ -12,15 +11,10 @@ import warnings
 
 import evaluation_metrics
 from sklearn.model_selection import ParameterSampler
-import hyperparam_config
 from sklearn.neural_network import MLPRegressor
 from sklearn.linear_model import LinearRegression
 
 warnings.filterwarnings("ignore")
-
-S_PATH = "/".join(os.path.realpath(__file__).split(os.sep)[:-1])
-OUT_DATA_PATH = os.path.join(S_PATH, "../data", "out_data")
-RAW_DATA_PATH = os.path.join(S_PATH, "../data", "raw")
 
 
 class Regressors(object):
