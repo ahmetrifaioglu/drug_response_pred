@@ -118,14 +118,7 @@ class Regressors(object):
 
             
         print("Best ave. r2", best_r2, "best param", best_result_param)
-        """rows = []
-        for fold in param_dict_result[best_result_param]:
-            rows.append([fold])
-            rows[-1].extend(param_dict_result[best_result_param][fold])
-        df = pd.DataFrame(rows, columns = ["Fold #", "Validation R2", "Validation MSE", "Test R2", "Test MSE"])
-        df.to_csv(os.path.join(OUT_DATA_PATH, "baseline_predictors", f"{classifier}_best_performance.csv" ))"""
-
-        """"""
+        
         
     def dict_to_str(self, i_dict):
         # an empty string
