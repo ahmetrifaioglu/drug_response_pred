@@ -39,13 +39,24 @@
 
 As a case study of the challenge, I selected "COLORECTAL CANCER" (i.e. CRC) as the disease of interest and got the list of genes that are associated with CRC from  Online Mendelian Inheritance in Man (OMIM) database https://omim.org/entry/114500 . First, ChEMBL A
 
-2. A subset of associated genes were saved to the text file where each line must include a gene symbol. The created file will be used as input to the system. In our case the file is stored under `data/COLORECTAL_CANCER_genes.txt`. Subsequnetly, the known activities against the list of genes are retrived from the ChEMBL database which is a manually curated database of bioactive molecules with drug-like properties. The aim here is to get manually-cruted drug-target interaction data to create our trainign dataset. First, we apply several filtering and preprocessing steps to get more reliable bioactivities. Initially, the data points were selectively filtered based on various criteria such as the "target type" (specifically single protein), "taxonomy" (including human), "assay type" (covering binding assays), and "standard type" (i.e. IC50) attributes.
-3.
-4. compound-target 
+2. A subset of associated genes were saved to the text file where each line must include a gene symbol. The created file will be used as input to the system. In our case the file is stored under `data/COLORECTAL_CANCER_genes.txt`. Subsequnetly, the known activities against the list of genes are retrived from the ChEMBL database which is a manually curated database of bioactive molecules with drug-like properties. The aim here is to get manually-cruted drug-target interaction data to create our trainign dataset. First, we apply several filtering and preprocessing steps to get more reliable bioactivities. Initially, the data points were selectively filtered based on various criteria such as the "target type" (specifically single protein), "taxonomy" (including human), "assay type" (covering binding assays), and "standard type" (i.e. IC50) attributes. I used ChEMBL webresource client for getting and filtering data. Once we created the compound-target (or gene) and bioactivity values (IC50) dataset we fetched the SMILEs strings of compounds whic are line notations for encoding molecular structures. Subsequenly, each compounds was represented by a circular fingerprint (extended connectiviry fingerprint) which are one of the widely-used features to train virtual screening methods. I used RDKit framework to create feature vectors using the smiles. For this, we created a mol object for each compound and ECFP4 fingerprints were created for each compound.
+Virtual screening can be considered as a classification or a regression task. We can determine a threshold value to convert
+In this solution where we try to predict the IC50 values of each compound.
+I implemented 4 different regression methods.  m  
+4.
+5. compound-target 
 
-5. 
-6. The implementation includes 5 main scripts:
-
+6. 
+7. The implementation includes 5 main scripts:
+How to create environment:
+`
+conda env create -f environment.yml
+conda activate drug-pred-chal-env
+`
+How to run the analysis:
+`
+python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en CRC_predict
+`
 -- **_evaluation_metrics.py_**
 The script defines several functions for calculating evaluation metrics for regression models. The metrics included are:
 
