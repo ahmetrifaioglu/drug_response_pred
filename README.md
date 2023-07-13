@@ -42,7 +42,6 @@
 7. Training: Users can select different machine learning algorithms (Support Vector Regression, Random Forest, Multi Layer Perceptron) to train their models. The constructed training dataset randomly seperated into 3 parts (training, validation and test). The models trained based on different loss functions such as Mean Squared Error (MSE), HuberLoss and Mean Absolute Error (MAE) loss.
 8. Finally the compounds above a specific threshold can be used as candidate compounds. Here I did not provide a specific threshold as the threshold may be highly different depending on the gene/protein family. Selecting the compounds with high bioactivities based on pChEMBL values is quite easy by checking the output file (for example, pCHEMBL value of 6.0 equals to 1 micro molar) and the compounds above the threshold of 6.0 can  be retrieved from `<experiment_name>_predictions.csv`.
 
-The implementation includes 5 main scripts:
 
 ## Summary of scripts
 
