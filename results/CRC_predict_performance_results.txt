@@ -1,2 +1,2 @@
-Hyperparameters: max_iter: 50, kernel: rbf, gamma: 0.01, C: 15.22121212121212, val_r2_score	val_mse_score	test_r2_score	test_mse_score
-0.838	0.119	0.862	0.117
+Hyperparameters: max_iter: 106, kernel: rbf, gamma: 0.001, C: 46.97575757575758, val_r2_score	val_mse_score	test_r2_score	test_mse_score
+0.866	0.139	0.845	0.098
