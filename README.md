@@ -86,7 +86,7 @@ python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en C
 After running the above scripts 3 output files will be generated under specified output folder (i.e. ../results folder in this example)
  - `<experiment_name>.model` keeps the trained model to be used later for making new predictions.
  - `<experiment_name>_performance_results.txt` where prediction performance results are stored.
- - `<experiment_name>_predictions.csv` where the real and predicted bioactivity values are stored.
+ - `<experiment_name>_predictions.csv` where the real and predicted bioactivity values are stored. The candidate molecules can be selected from this file based on the threshold of interest.
 
 ## Explanation of Arguments
 
@@ -100,8 +100,8 @@ After running the above scripts 3 output files will be generated under specified
 - The aim of this work is not to provide an accurate drug/compound specific to a disease. Here, the aim is to show how to create a predictive model to infer the activate compounds against a disease, which resources can be used and how a basic design could be.
 - There are several ways to improve the pipeline proposed here:
 
-  - This method can be further improved by considering the target gene or by creating a pairwise input machilne learning model so that the the target The model should also be aware of the genes so the features of the genes can also be used.
-  - Since in majority of reported bioactivity values in the literature consist of  bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distribution of the data.
+  - This method can be further improved by considering the target gene or by creating a pairwise input machine learning model so that the target gene features can also be used.
+  - The binding affinity values reported in the literature mostly consist of drug-target interaction pairs with high binding affinities which may cause a bias in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distribution of the data.
   - Functional Analysis:
 
     - Perform functional analysis on the prioritized gene lists using open source tools such as Gene Ontology (GO) enrichment analysis, pathway analysis, or network analysis.
@@ -110,4 +110,4 @@ After running the above scripts 3 output files will be generated under specified
 
     - Evaluate the pharmacokinetic properties and potential toxicity of the identified candidate drugs using open source tools such as Open Babel, RDKit, or Tox21.
     - Assess factors such as drug metabolism, absorption, distribution, excretion, and toxicity profiles to identify drugs with favorable pharmacological properties.
-    - The trained model can be used for testing completely new compounds. 
+  - The trained model can be used for testing completely new compounds. 
