@@ -49,14 +49,19 @@ I implemented 4 different regression methods.  m
 6. 
 7. The implementation includes 5 main scripts:
 How to create environment:
-`
+
+
+```
 conda env create -f environment.yml
+
 conda activate drug-pred-chal-env
-`
+```
 How to run the analysis:
-`
+
+
+```
 python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en CRC_predict
-`
+```
 -- **_evaluation_metrics.py_**
 The script defines several functions for calculating evaluation metrics for regression models. The metrics included are:
 
