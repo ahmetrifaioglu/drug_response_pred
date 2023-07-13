@@ -120,7 +120,7 @@ class Regressors(object):
                 f.write("\t".join([str(val) for val in best_results_list]))
 
             df_final_preds = pd.DataFrame(final_preds_labels, columns=["molecule_chembl_id", "pChEMBL", "Predicted Value", "Validation/Test"])
-            df_final_preds.to_csv(self.model_out_path+"_preditions.csv")
+            df_final_preds.to_csv(self.model_out_path+"_predictions.csv")
 
             with open(self.model_out_path+".model", 'wb') as f:
                 pickle.dump(best_model,f)

@@ -31,7 +31,8 @@ df_activities = utils.get_chembl_activities_df(lst_genes)
 
 print("### Dropping duplicate entries...")
 df_activities = df_activities.groupby('molecule_chembl_id').first().reset_index()
-lst_molchembl_ids = df_activities["molecule_chembl_id"][:100]
+# ONLY USE first 200 bioactivities to test
+lst_molchembl_ids = df_activities["molecule_chembl_id"][:200]
 
 print("### Fetching smiles strings of compounds from ChEMBL database...")
 molid2smiles_dict = utils.get_smiles_from_molecule_chembl_id_list(lst_molchembl_ids)
