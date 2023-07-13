@@ -6,13 +6,14 @@
    In this proposal, I present a protocol for identifying candidate drugs to potentially be used to cure or alleviate a disease phenotype. The protocol utilizes prioritized gene lists as one of the primary data inputs. Publicly available open source databases and tools will be used to perform the analysis.
 
 2. Data Sources:
+   
    a. Primary Data Input: Prioritized Gene Lists
       - The prioritized gene lists can be obtained from relevant studies, databases, or based on the marker genes specific to the chosen disease. These genes assumed to be associated with the disease phenotype and the aim is to find drugs that targeting these genes. 
 
    b. Alternative Data Input: Publicly Accessible Datasets
       - The drug-target interaction databases such as ChEMBL, DrugBank to create the dataset for training
 
-3. Computational Analysis Steps:
+4. Computational Analysis Steps:
    a. Data Integration:
       - Merge the prioritized gene lists with other relevant datasets, if available, to augment the analysis and provide additional context.
 
@@ -31,23 +32,26 @@
       - Evaluate the pharmacokinetic properties and potential toxicity of the identified candidate drugs using open source tools such as Open Babel, RDKit, or Tox21.
       - Assess factors such as drug metabolism, absorption, distribution, excretion, and toxicity profiles to identify drugs with favorable pharmacological properties.
 
-4. Output:
+5. Output:
    The final output of the computational analysis is a recommendation list of candidate compounds/drugs that have the potential to aid in alleviating the observed disease phenotype.
 
 **B. Solution Implementation**
 1. Summary of the implementation:
 
-As a case study of the challenge, I selected "COLORECTAL CANCER" (i.e. CRC) as the disease of interest and got the list of genes that are associated with CRC from  Online Mendelian Inheritance in Man (OMIM) database https://omim.org/entry/114500 . First, ChEMBL A
+As a case study of the challenge, I selected "COLORECTAL CANCER" (i.e. CRC) as the disease of interest and got the list of genes that are associated with CRC from  Online Mendelian Inheritance in Man (OMIM) database https://omim.org/entry/114500 . For initial training, a subset of associated genes were exported to a text file where each line must include a gene symbol. The created file will be used as input to the system. In our case the file is stored under `data/COLORECTAL_CANCER_genes.txt`. 
 
-2. A subset of associated genes were saved to the text file where each line must include a gene symbol. The created file will be used as input to the system. In our case the file is stored under `data/COLORECTAL_CANCER_genes.txt`. Subsequnetly, the known activities against the list of genes are retrived from the ChEMBL database which is a manually curated database of bioactive molecules with drug-like properties. The aim here is to get manually-cruted drug-target interaction data to create our trainign dataset. First, we apply several filtering and preprocessing steps to get more reliable bioactivities. Initially, the data points were selectively filtered based on various criteria such as the "target type" (specifically single protein), "taxonomy" (including human), "assay type" (covering binding assays), and "standard type" (i.e. IC50) attributes. I used ChEMBL webresource client for getting and filtering data. Once we created the compound-target (or gene) and bioactivity values (IC50) dataset we fetched the SMILEs strings of compounds whic are line notations for encoding molecular structures. Subsequenly, each compounds was represented by a circular fingerprint (extended connectiviry fingerprint) which are one of the widely-used features to train virtual screening methods. I used RDKit framework to create feature vectors using the smiles. For this, we created a mol object for each compound and ECFP4 fingerprints were created for each compound.
-Virtual screening can be considered as a classification or a regression task. We can determine a threshold value to convert
-In this solution where we try to predict the IC50 values of each compound.
-I implemented 4 different regression methods.  m  
-4.
-5. compound-target 
+2. Subsequnetly, the known activities against the list of genes are retrived from the ChEMBL database which is a manually curated database of bioactive molecules with drug-like properties. The aim here is to get high confidence drug-target gene interaction data to create our training dataset. I used `ChEMBL webresource client` for getting and filtering data. 
 
-6. 
-7. The implementation includes 5 main scripts:
+3. Several filtering and preprocessing steps were used to get more reliable bioactivities. The data points were selectively filtered based on various criteria such as the "target type" (specifically single protein), "taxonomy", "assay type" (covering binding assays), and "standard type" (i.e. IC50) attributes. Finally, the bioactivity without a pChEMBL value were filtered, which is used to obtain comparable measures of half-maximal response on a negative logarithmic scale in ChEMBL. The bioactivity measurements with pChEMBL value represents more reliable interactions since they are manually curated. The filtering steps were similar to the defined filters determined in our previous study called DEEPScreen (_Rifaioglu, A. S., Nalbat, E., Atalay, V., Martin, M. J., Cetin-Atalay, R., & Doğan, T. (2020). DEEPScreen: high performance drug–target interaction prediction with convolutional neural networks using 2-D structural compound representations. Chemical Science, 11(9), 2531-2557._ https://pubs.rsc.org/en/content/articlelanding/2020/sc/c9sc03414e ).
+
+4. Once we created the compound-target (or gene) and bioactivity values (IC50) dataset we fetched the SMILEs strings of compounds which are line notations for encoding molecular structures.
+  
+5. Each compound was represented by a circular fingerprint (extended connectiviry fingerprint) which are one of the widely-used features to train virtual screening methods. I used RDKit framework to create feature vectors using the smiles (https://www.rdkit.org/docs/GettingStartedInPython.html). For this, we created mol objects for each compound using their SMILES representations and thenECFP4 fingerprints were created for each compound which represents their feature vectors.
+
+6. Virtual screening problem can be considered as a classification or a regression task. In classification, the aim is to predict whether a compound is active or inactive based on a predefined concentration threshold (such as 100 nM, 1 µM etc.) applied on IC50 values. In regression, the aim is to predict the real IC50 values. Once the final models are obtained a threshold can be used to provide candidate compounds as output. Here, I considered the problem as a regression problem and train a model to predict bioactivity values (pChEMBL values) given the training dataset.
+
+7. Users can select different machine learning algorithms (Support Vector Regression, Random Forest, Multi Layer Perceptron) to train their models. 
+9. The implementation includes 5 main scripts:
 How to create environment:
 
 
@@ -85,32 +89,13 @@ Includes several utilities function for data generation and manipulation.
 The main function that takes the inputs and perform training.
 
 
+**Note: **
+- The aim here is not to provide an accurate drug/compound specific to a disease. Here the aim is to show how to create a predictive model to infer the activate compounds against a disease.
 
-"""
-The aim here is not to provide an accurate drug/compı specific to a disease. Here the aim is to show how to create a predictive model to infer the activate compounds against a disease.
+- The model uses all the drug-target interaction associated with the provided list of genes without taking into account the target information. 
 
-To do this, we first get the gene list provided by the user. 
-The basic assumption is that we have prioritised list of genes that were inferred against a disease. 
-
-
- . We do not use the all the activities available in ChEMBL database. First, we apply several filtering steps 
-to get more reliable bioactivities (i.e. )
-The model should also be aware of the genes so the features of the genes can also be used. 
-
-"""
-
-"""
-
-The model uses all the drug-target interaction associated with the provided list of genes without taking into account the target informatiom. 
-
-This method can be further improved by considering the target gene or by creating a pairwise input machilne learning model so that the the target 
+- This method can be further improved by considering the target gene or by creating a pairwise input machilne learning model so that the the target The model should also be aware of the genes so the features of the genes can also be used. 
 information is also incorporated. 
 
-This model, since in majority of cases only the hihgly bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, 
-a well-defined sampling techniques should be applied before creating the final model based on the distributin of the data. 
-
-
-Here
-
-"""
+- Since in majority of cases only the hihgly bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distributin of the data.
 
