@@ -89,7 +89,7 @@ python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en C
 
 
 
-**Note: **
+### **Note: **
 - The aim of this work is not to provide an accurate drug/compound specific to a disease. Here, the aim is to show how to create a predictive model to infer the activate compounds against a disease, which resources can be used and how a basic design could be.
 
 - There are several ways to improve the pipeline proposed here:
@@ -97,12 +97,12 @@ python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en C
 information is also incorporated. 
 
    - Since in majority of cases only the hihgly bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distributin of the data.
+     
    - Functional Analysis:
      - Perform functional analysis on the prioritized gene lists using open source tools such as Gene Ontology (GO) enrichment analysis, pathway analysis, or network analysis.
       - Identify enriched biological processes, molecular functions, or pathways associated with the prioritized genes, providing insights into the disease mechanism.
-
-
-   d. Pharmacokinetic and Toxicity Analysis (Not implemented but necessary):
+   
+   - Pharmacokinetic and Toxicity Analysis:
       - Evaluate the pharmacokinetic properties and potential toxicity of the identified candidate drugs using open source tools such as Open Babel, RDKit, or Tox21.
       - Assess factors such as drug metabolism, absorption, distribution, excretion, and toxicity profiles to identify drugs with favorable pharmacological properties.
       
