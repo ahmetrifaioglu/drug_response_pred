@@ -71,6 +71,7 @@ class Regressors(object):
         best_r2 = -np.inf
         best_model = None
         best_results_list = []
+        final_preds_labels = []
         print("Starting hyperparameter search...")
         for param in tqdm(param_list):
             param_str = self.dict_to_str(param)
@@ -102,23 +103,31 @@ class Regressors(object):
                 best_result_param = param_str
                 best_model = model
                 best_results_list = result_list
+                final_preds_labels = []
+                for ind, mol_chem_id in enumerate(val_ids):
+                    final_preds_labels.append([mol_chem_id, validation_labels[ind], val_predictions[ind], "validation"])
+                for ind, mol_chem_id in enumerate(test_ids):
+                    final_preds_labels.append([mol_chem_id, test_labels[ind], test_predictions[ind], "test"])
+
 
         print("Hyperparameter search finished...")
         
-        print("Saving the best model...")
+        print("Saving the best model and outputs ...")
         if self.model_out_path is not None:
             with open(self.model_out_path+"_performance_results.txt", "w") as f:
                 f.write("Hyperparameters: "+best_result_param)
                 f.write("\t".join(["val_r2_score", "val_mse_score", "test_r2_score", "test_mse_score"])+"\n")
                 f.write("\t".join([str(val) for val in best_results_list]))
 
+            df_final_preds = pd.DataFrame(final_preds_labels, columns=["molecule_chembl_id", "pChEMBL", "Predicted Value", "Validation/Test"])
+            df_final_preds.to_csv(self.model_out_path+"_preditions.csv")
 
             with open(self.model_out_path+".model", 'wb') as f:
                 pickle.dump(best_model,f)
 
             
         print("Best ave. r2", best_r2, "best param", best_result_param)
-        
+
         
     def dict_to_str(self, i_dict):
         # an empty string

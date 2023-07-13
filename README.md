@@ -98,8 +98,7 @@ python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en C
 - There are several ways to improve the pipeline proposed here:
 
   - This method can be further improved by considering the target gene or by creating a pairwise input machilne learning model so that the the target The model should also be aware of the genes so the features of the genes can also be used.
-    information is also incorporated.
-  - Since in majority of cases only the hihgly bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distributin of the data.
+  - Since in majority of reported bioactivity values in the literature consist of  bioactive ocmpounds are reported against target, there are biases in predictive models. Therefore, a well-defined sampling techniques should be applied before creating the final model based on the distribution of the data.
   - Functional Analysis:
 
     - Perform functional analysis on the prioritized gene lists using open source tools such as Gene Ontology (GO) enrichment analysis, pathway analysis, or network analysis.
