@@ -89,7 +89,7 @@ python main.py -i ../data/COLORECTAL_CANCER_genes.txt -m SVR -o ../results -en C
 
 
 
-### Note:
+## Note:
 - The aim of this work is not to provide an accurate drug/compound specific to a disease. Here, the aim is to show how to create a predictive model to infer the activate compounds against a disease, which resources can be used and how a basic design could be.
 
 - There are several ways to improve the pipeline proposed here:
